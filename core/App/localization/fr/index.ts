@@ -8,7 +8,6 @@ const translation = {
         "Confirm": "Confirmer",
         "Accept": "Accepter",
         "Reject": "Rejeter",
-        "NotNow": "Not now (FR)",
         "Share": "Partager",
         "Decline": "Refuser",
         "Back": "Retour",
@@ -33,7 +32,6 @@ const translation = {
         "Biometrics": "Biométrie",
         "On": "Activé",
         "Off": "Désactivé",
-        "Close": "Close (FR)",
     },
     "Language": {
         "English": "Anglais",
@@ -63,15 +61,7 @@ const translation = {
         "Title1032": "Impossible de retirer le justificatif.",
         "Message1032": "Un problème est survenu lors du retrait du justificatif.",
         "Title1033": "Impossible de récupérer le justificatif.",
-        "Message1033": "Le justificatif est introuvable.",
-        "Title1034": "Unable to fetch proof request. (FR)",
-        "Message1034": "Proof request could not be found. (FR)",
-        "Title1035": "Unable to fetch credential offer. (FR)",
-        "Message1035": "Credential offer could not be found. (FR)",
-        "Title1036": "Unable to fetch wallet credentials (FR)",
-        "Message1036": "Wallet credentials could not be found (FR)",
-        "Title1037": "Unable to remove contact. (FR)",
-        "Message1037": "There was a problem while removing the contact. (FR)",
+        "Message1033": "Le justificatif est introuvable."
     },
     "StatusMessages": {
         "InitAgent": "Initialisation de l'agent ..."
@@ -82,13 +72,11 @@ const translation = {
         "IAgree": "J'accepte",
         "Attestation": "J'ai lu, je comprends et j'accepte les conditions."
     },
-    "CameraDisclosure": {
-        "AllowCameraUse": "Allow camera use (FR)",
-        "CameraDisclosure": "La caméra est utilisée pour scanner les codes QR pour un traitement immédiat sur l'appareil. Aucune information sur les images n'est stockée, utilisée à des fins d'analyse ou partagée.",
-        "ToContinueUsing": "To continue using the Aries Bifold scan feature, please allow camera permissions. (FR)",
-        "Allow": "Allow (FR)",
-        "OpenSettings": "Open settings (FR)",
-    },
+    "PrivacyPolicy": {
+    "Title": "Politique de confidentialité",
+    "CameraDisclosure":
+      "La caméra est utilisée pour scanner les codes QR pour un traitement immédiat sur l'appareil. Aucune information sur les images n'est stockée, utilisée à des fins d'analyse ou partagée.",
+  },
     "PINCreate": {
         "Message": {
             "CrossPatternValidation": "Un patron de croix a été détecté dans votre NIP. Veuillez saisir un NIP différent.",
@@ -172,25 +160,8 @@ const translation = {
     "ContactDetails": {
         "Created": "Créé",
         "ConnectionState": "État de la connexion",
-        "AContact": "Un contact",
-        "DateOfConnection": "Date of connection: {{ date }} (FR)",
-        "RemoveTitle": "Remove this contact (FR)",
-        "RemoveCaption": "To add credentials, the issuing organization needs to be a contact. (FR)",
-        "UnableToRemoveTitle": "Unable to remove contact (FR)",
-        "UnableToRemoveCaption": "Unable to remove because there are credentials issued by this contact in your wallet. Remove the credentials first then remove this contact. (FR)",
-        "GoToCredentials": "Go to Credentials (FR)",
-        "ContactRemoved": "Contact removed (FR)"
+        "AContact": "Un contact"
     },
-    "WhatAreContacts": {
-        "Title": "What are Contacts? (FR)",
-        "Preamble": "Adding organizations as a Contact will allow you to: (FR)",
-        "ListItemCredentialUpdates": "Get updates to credentials issued by this organization (FR)",
-        "ListItemNewCredentials": "Get offered new credentials (FR)",
-        "ListItemProofRequest": "Fast-track proof requests (FR)",
-        "RemoveContacts": "You can always remove Contacts at any time from your (FR)",
-        "ContactsLink": "Contacts list (FR)",
-        "ContactSharing": "Use of your credentials is never shared with your Contacts. (FR)"
-      },
     "Credentials": {
         "CredentialsNotFound": "Justificatifs non trouvés",
         "CredentialDetails": "Détails des justificatifs",
@@ -368,9 +339,7 @@ const translation = {
     },
     "NetInfo": {
         "NoInternetConnectionTitle": "Aucune connexion Internet",
-        "NoInternetConnectionMessage": "Vous ne pouvez pas accéder aux services à l'aide de Bifold ou recevoir des informations d'identification tant que vous n'êtes pas de nouveau en ligne.\n\nS'il vous plait, vérifiez votre connexion internet.",
-        "LedgerConnectivityIssueTitle": "Wallet Services (FR)",
-        "LedgerConnectivityIssueMessage": "A firewall may be preventing you from connecting to wallet related services. (FR)",
+        "NoInternetConnectionMessage": "Vous ne pouvez pas accéder aux services à l'aide de Bifold ou recevoir des informations d'identification tant que vous n'êtes pas de nouveau en ligne.\n\nS'il vous plait, vérifiez votre connexion internet."
     }
 }
 export default translation

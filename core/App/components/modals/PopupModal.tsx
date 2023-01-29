@@ -1,7 +1,6 @@
 import React from 'react'
 import { Modal, StyleSheet, View } from 'react-native'
 
-import { useTheme } from '../../contexts/theme'
 import { GenericFn } from '../../types/fn'
 import InfoBox, { InfoBoxType } from '../misc/InfoBox'
 
@@ -24,13 +23,12 @@ const PopupModal: React.FC<PopupModalProps> = ({
   notificationType,
   onCallToActionLabel,
 }) => {
-  const { ColorPallet } = useTheme()
   const styles = StyleSheet.create({
     modalCenter: {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: ColorPallet.notification.popupOverlay,
+      backgroundColor: 'rgba(0,0,0,0.5)',
       padding: 20,
     },
   })

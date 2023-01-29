@@ -1,16 +1,12 @@
 import { ConfigurationContext } from '../../App'
 import Record from '../../App/components/record/Record'
 import { DefaultOCABundleResolver } from '../../App/types/oca'
-import { useNotifications } from '../../App/hooks/notifications'
 
 const configurationContext: ConfigurationContext = {
   pages: () => [],
   terms: () => null,
   splash: () => null,
   homeContentView: () => null,
-  credentialListHeaderRight: () => null,
-  credentialListOptions: () => null,
-  credentialEmptyList: () => null,
   OCABundle: new DefaultOCABundleResolver(),
   useBiometry: () => null,
   record: Record,
@@ -31,15 +27,6 @@ const configurationContext: ConfigurationContext = {
     },
     displayHelper: false,
   },
-  customNotification: {
-    component: () => null,
-    onCloseAction: () => null,
-    title: "",
-    description: "",
-    buttonTitle: "",
-    pageTitle:"",
-  },
-  useCustomNotifications: useNotifications
 }
 
 export default configurationContext

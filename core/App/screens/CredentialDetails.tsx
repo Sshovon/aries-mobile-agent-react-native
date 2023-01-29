@@ -2,28 +2,28 @@ import type { StackScreenProps } from '@react-navigation/stack'
 
 import { CredentialExchangeRecord } from '@aries-framework/core'
 import { useAgent, useCredentialById } from '@aries-framework/react-hooks'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Text, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Toast from 'react-native-toast-message'
 
 import CredentialCard from '../components/misc/CredentialCard'
 import InfoBox, { InfoBoxType } from '../components/misc/InfoBox'
-import CommonRemoveModal from '../components/modals/CommonRemoveModal'
-import RecordRemove from '../components/record/RecordRemove'
+import CommonDeleteModal from '../components/modals/CommonDeleteModal'
 import { ToastType } from '../components/toast/BaseToast'
 import { dateFormatOptions } from '../constants'
 import { useConfiguration } from '../contexts/configuration'
 import { DispatchAction } from '../contexts/reducers/store'
 import { useStore } from '../contexts/store'
 import { useTheme } from '../contexts/theme'
+import { getCurrentLanguage } from '../localization'
 import { BifoldError } from '../types/error'
 import { CredentialMetadata } from '../types/metadata'
 import { CredentialStackParams, Screens } from '../types/navigators'
 import { Field } from '../types/record'
-import { RemoveType } from '../types/remove'
 import { getCredentialConnectionLabel } from '../utils/helpers'
+import { testIdWithKey } from '../utils/testable'
 
 type CredentialDetailsProps = StackScreenProps<CredentialStackParams, Screens.CredentialDetails>
 
@@ -33,18 +33,36 @@ const CredentialDetails: React.FC<CredentialDetailsProps> = ({ navigation, route
   }
 
   const { credentialId } = route?.params
+
   const { agent } = useAgent()
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const [, dispatch] = useStore()
   const [isRevoked, setIsRevoked] = useState<boolean>(false)
   const [revocationDate, setRevocationDate] = useState<string>('')
-  const [fields, setFields] = useState<Field[]>([])
+  const [fields, setFields] = useState<Array<Field>>([])
   const [isRevokedMessageHidden] = useState<boolean>(false)
-  const [isRemoveModalDisplayed, setIsRemoveModalDisplayed] = useState<boolean>(false)
+  const [isDeleteModalDisplayed, setIsDeleteModalDisplayed] = useState<boolean>(false)
   const credential = useCredentialById(credentialId)
   const credentialConnectionLabel = getCredentialConnectionLabel(credential)
   const { TextTheme, ColorPallet } = useTheme()
   const { OCABundle, record } = useConfiguration()
+
+  const styles = StyleSheet.create({
+    headerText: {
+      ...TextTheme.normal,
+    },
+    footerText: {
+      ...TextTheme.normal,
+    },
+    linkContainer: {
+      minHeight: TextTheme.normal.fontSize,
+      paddingVertical: 2,
+    },
+    link: {
+      ...TextTheme.normal,
+      color: ColorPallet.brand.link,
+    },
+  })
 
   useEffect(() => {
     if (!agent) {
@@ -93,17 +111,18 @@ const CredentialDetails: React.FC<CredentialDetailsProps> = ({ navigation, route
     credential.revocationNotification == undefined ? setIsRevoked(false) : setIsRevoked(true)
     if (isRevoked && credential?.revocationNotification?.revocationDate) {
       const date = new Date(credential.revocationNotification.revocationDate)
-      setRevocationDate(date.toLocaleDateString(i18n.language, dateFormatOptions))
+      setRevocationDate(date.toLocaleDateString('en-CA', dateFormatOptions))
     }
-    OCABundle.getCredentialPresentationFields(credential as CredentialExchangeRecord, i18n.language).then((fields) =>
-      setFields(fields)
+    OCABundle.getCredentialPresentationFields(credential as CredentialExchangeRecord, getCurrentLanguage()).then(
+      (fields) => setFields(fields)
     )
   }, [credential])
 
   useEffect(() => {
     if (credential?.revocationNotification) {
       credential.metadata.set(CredentialMetadata.customMetadata, { revoked_seen: true })
-      agent?.credentials.update(credential) // returns a promise
+      const credService = agent?.credentials.getService('v1')
+      credService?.update(credential)
     }
   }, [isRevoked])
 
@@ -112,11 +131,11 @@ const CredentialDetails: React.FC<CredentialDetailsProps> = ({ navigation, route
     navigation.navigate(Screens.Credentials)
   }
 
-  const handleOnRemove = () => {
-    setIsRemoveModalDisplayed(true)
+  const handleRemovePressed = () => {
+    setIsDeleteModalDisplayed(true)
   }
 
-  const handleSubmitRemove = async () => {
+  const handleSubmitRemovePressed = async () => {
     try {
       if (!(agent && credential)) {
         return
@@ -137,13 +156,9 @@ const CredentialDetails: React.FC<CredentialDetailsProps> = ({ navigation, route
     }
   }
 
-  const handleCancelRemove = () => {
-    setIsRemoveModalDisplayed(false)
+  const handleCancelRemovePressed = () => {
+    setIsDeleteModalDisplayed(false)
   }
-
-  const callOnRemove = useCallback(() => handleOnRemove(), [])
-  const callSubmitRemove = useCallback(() => handleSubmitRemove(), [])
-  const callCancelRemove = useCallback(() => handleCancelRemove(), [])
 
   const header = () => {
     return (
@@ -188,7 +203,33 @@ const CredentialDetails: React.FC<CredentialDetailsProps> = ({ navigation, route
             </View>
           </View>
         ) : null}
-        <RecordRemove onRemove={callOnRemove} />
+
+        <View
+          style={{
+            backgroundColor: ColorPallet.brand.secondaryBackground,
+            marginTop: 16,
+            paddingHorizontal: 25,
+            paddingVertical: 16,
+          }}
+        >
+          <TouchableOpacity
+            accessible={true}
+            accessibilityLabel={t('CredentialDetails.RemoveFromWallet')}
+            testID={testIdWithKey('RemoveFromWallet')}
+            activeOpacity={1}
+            onPress={() => handleRemovePressed()}
+          >
+            <Text
+              style={[
+                styles.footerText,
+                styles.link,
+                { color: ColorPallet.semantic.error, textDecorationLine: 'underline' },
+              ]}
+            >
+              {t('CredentialDetails.RemoveFromWallet')}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     )
   }
@@ -196,17 +237,16 @@ const CredentialDetails: React.FC<CredentialDetailsProps> = ({ navigation, route
   return (
     <SafeAreaView style={{ flexGrow: 1 }} edges={['left', 'right']}>
       {record({
-        header,
-        footer,
-        fields,
+        header: header,
+        footer: footer,
+        fields: fields,
         hideFieldValues: true,
       })}
-      <CommonRemoveModal
-        removeType={RemoveType.Credential}
-        visible={isRemoveModalDisplayed}
-        onSubmit={callSubmitRemove}
-        onCancel={callCancelRemove}
-      />
+      <CommonDeleteModal
+        visible={isDeleteModalDisplayed}
+        onSubmit={() => handleSubmitRemovePressed()}
+        onCancel={() => handleCancelRemovePressed()}
+      ></CommonDeleteModal>
     </SafeAreaView>
   )
 }

@@ -86,7 +86,6 @@ interface NotificationColors {
   errorBorder: string
   errorIcon: string
   errorText: string
-  popupOverlay: string
 }
 
 interface GrayscaleColors {
@@ -115,7 +114,6 @@ interface Assets {
 
 export const borderRadius = 4
 export const heavyOpacity = 0.7
-export const mediumOpacity = 0.5
 export const lightOpacity = 0.35
 export const zeroOpacity = 0.0
 export const borderWidth = 2
@@ -156,7 +154,6 @@ const NotificationColors: NotificationColors = {
   errorBorder: '#D8292F',
   errorIcon: '#D8292F',
   errorText: '#FFFFFF',
-  popupOverlay: `rgba(0, 0, 0, ${mediumOpacity})`,
 }
 
 const GrayscaleColors: GrayscaleColors = {
@@ -332,6 +329,9 @@ export const ListItems = StyleSheet.create({
   },
   credentialDetails: {
     ...TextTheme.caption,
+  },
+  credentialDeleteBackground: {
+    backgroundColor: ColorPallet.brand.primaryBackground,
   },
   credentialOfferBackground: {
     backgroundColor: ColorPallet.brand.primaryBackground,

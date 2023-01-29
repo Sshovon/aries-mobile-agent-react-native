@@ -11,7 +11,6 @@ import { useConfiguration } from '../contexts/configuration'
 import { DispatchAction } from '../contexts/reducers/store'
 import { useStore } from '../contexts/store'
 import { useTheme } from '../contexts/theme'
-import { useDeepLinks } from '../hooks/deep-links'
 import AttemptLockout from '../screens/AttemptLockout'
 import Onboarding from '../screens/Onboarding'
 import { createCarouselStyle } from '../screens/OnboardingPages'
@@ -41,7 +40,6 @@ const RootStack: React.FC = () => {
   const defaultStackOptions = createDefaultStackOptions(theme)
   const OnboardingTheme = theme.OnboardingTheme
   const { pages, terms, splash, useBiometry } = useConfiguration()
-  useDeepLinks()
 
   const lockoutUser = async () => {
     if (agent && state.authentication.didAuthenticate) {

@@ -16,6 +16,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import { dateFormatOptions } from '../../constants'
 import { useConfiguration } from '../../contexts/configuration'
 import { useTheme } from '../../contexts/theme'
+import { getCurrentLanguage } from '../../localization'
 import { GenericFn } from '../../types/fn'
 import { OCACredentialBundle } from '../../types/oca'
 import { luminanceForHexColour } from '../../utils/luminance'
@@ -81,15 +82,16 @@ interface BundlePair {
 }
 
 const CredentialCard: React.FC<CredentialCardProps> = ({ credential, style = {}, onPress = undefined }) => {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const { ColorPallet, TextTheme } = useTheme()
   const { OCABundle } = useConfiguration()
 
   const [bundles, setBundles] = useState<BundlePair | undefined>(undefined)
-  const metaLayer = bundles?.bundle1?.getMetaOverlay(i18n.language) ?? bundles?.bundle2?.getMetaOverlay(i18n.language)
+  const lang = getCurrentLanguage()
+  const metaLayer = bundles?.bundle1?.getMetaOverlay(lang) ?? bundles?.bundle2?.getMetaOverlay(lang)
   const overlay = bundles?.bundle1?.getCardLayoutOverlay() ?? bundles?.bundle2?.getCardLayoutOverlay()
 
-  const [isRevoked, setIsRevoked] = useState<boolean>(false)
+  const [isRevoked] = useState<boolean>(credential.revocationNotification !== undefined)
   const bundleLoaded = bundles?.bundle1 !== undefined || bundles?.bundle2 !== undefined
 
   const credentialTextColor = (hex?: string) => {
@@ -158,22 +160,18 @@ const CredentialCard: React.FC<CredentialCardProps> = ({ credential, style = {},
         return
       }
     }
-    OCABundle.resolve(credential).then(async (bundle) => {
-      if (bundle !== undefined) {
-        setBundles({ bundle1: bundle, bundle2: undefined })
+    OCABundle.resolve(credential).then(async (_bundle) => {
+      if (_bundle !== undefined) {
+        setBundles({ bundle1: _bundle, bundle2: undefined })
       } else {
-        await OCABundle.resolveDefaultBundle(credential).then((defaultBundle) => {
-          setBundles({ bundle1: undefined, bundle2: defaultBundle })
+        await OCABundle.resolveDefaultBundle(credential).then((_defaultBundle) => {
+          setBundles({ bundle1: undefined, bundle2: _defaultBundle })
         })
       }
     })
   }, [])
 
-  useEffect(() => {
-    setIsRevoked(credential.revocationNotification !== undefined)
-  }, [credential.revocationNotification])
-
-  const renderCredentialCardHeader = () => {
+  const renderCredentialCardHeader2 = () => {
     return (
       <View style={[styles.outerHeaderContainer]}>
         <View testID={testIdWithKey('CredentialCardHeader')} style={[styles.innerHeaderContainer]}>
@@ -194,9 +192,7 @@ const CredentialCard: React.FC<CredentialCardProps> = ({ credential, style = {},
               style={[
                 TextTheme.label,
                 {
-                  color:
-                    overlay?.header?.color ??
-                    credentialTextColor(overlay?.header?.backgroundColor || overlay?.backgroundColor),
+                  color: overlay?.header?.color ?? credentialTextColor(overlay?.header?.backgroundColor),
                   paddingHorizontal: 0.5 * paddingHorizontal,
                   flex: !overlay?.header?.imageSource ? 4 : 3,
                   textAlignVertical: 'center',
@@ -214,9 +210,7 @@ const CredentialCard: React.FC<CredentialCardProps> = ({ credential, style = {},
             style={[
               TextTheme.label,
               {
-                color:
-                  overlay?.header?.color ??
-                  credentialTextColor(overlay?.header?.backgroundColor || overlay?.backgroundColor),
+                color: overlay?.header?.color ?? credentialTextColor(overlay?.header?.backgroundColor),
                 textAlign: 'right',
                 paddingHorizontal: 0.5 * paddingHorizontal,
                 flex: 4,
@@ -246,7 +240,7 @@ const CredentialCard: React.FC<CredentialCardProps> = ({ credential, style = {},
               style={[TextTheme.label, { color: ColorPallet.semantic.error }]}
               testID={testIdWithKey('CredentialRevoked')}
             >
-              {t('CredentialDetails.Revoked')}
+              Revoked
             </Text>
           </View>
         ) : (
@@ -254,15 +248,13 @@ const CredentialCard: React.FC<CredentialCardProps> = ({ credential, style = {},
             style={[
               TextTheme.caption,
               {
-                color:
-                  overlay?.footer?.color ??
-                  credentialTextColor(overlay?.footer?.backgroundColor || overlay?.backgroundColor),
+                color: overlay?.footer?.color ?? credentialTextColor(overlay?.footer?.backgroundColor),
               },
             ]}
             testID={testIdWithKey('CredentialIssued')}
             maxFontSizeMultiplier={1}
           >
-            {t('CredentialDetails.Issued')}: {credential.createdAt.toLocaleDateString(i18n.language, dateFormatOptions)}
+            {t('CredentialDetails.Issued')}: {credential.createdAt.toLocaleDateString('en-CA', dateFormatOptions)}
           </Text>
         )}
       </View>
@@ -272,7 +264,7 @@ const CredentialCard: React.FC<CredentialCardProps> = ({ credential, style = {},
   const renderCredentialCard = (revoked = false) => {
     return (
       <>
-        {renderCredentialCardHeader()}
+        {renderCredentialCardHeader2()}
         {renderCredentialCardBody()}
         {renderCredentialCardFooter(revoked)}
       </>

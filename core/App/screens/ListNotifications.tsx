@@ -3,21 +3,10 @@ import { FlatList, View } from 'react-native'
 
 import NotificationListItem, { NotificationType } from '../components/listItems/NotificationListItem'
 import NoNewUpdates from '../components/misc/NoNewUpdates'
-import { useConfiguration } from '../contexts/configuration'
+import { useNotifications } from '../hooks/notifications'
 
 const ListNotifications: React.FC = () => {
-  const { useCustomNotifications } = useConfiguration()
-  const { notifications } = useCustomNotifications()
-
-  const getNotificationType = (notification: any): NotificationType => {
-    let retType = NotificationType.ProofRequest
-    if (notification.type === 'CredentialRecord') {
-      retType = NotificationType.CredentialOffer
-    } else if (notification.type === 'CustomNotification') {
-      retType = NotificationType.Custom
-    }
-    return retType
-  }
+  const { notifications } = useNotifications()
 
   return (
     <FlatList
@@ -31,7 +20,11 @@ const ListNotifications: React.FC = () => {
             marginBottom: index === notifications.length - 1 ? 45 : 0,
           }}
         >
-          <NotificationListItem notificationType={getNotificationType(notification)} notification={notification} />
+          {notification.type === 'CredentialRecord' ? (
+            <NotificationListItem notificationType={NotificationType.CredentialOffer} notification={notification} />
+          ) : (
+            <NotificationListItem notificationType={NotificationType.ProofRequest} notification={notification} />
+          )}
         </View>
       )}
       ListEmptyComponent={() => (

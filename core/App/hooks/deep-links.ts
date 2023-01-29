@@ -1,8 +1,5 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Linking } from 'react-native'
-
-import { DispatchAction } from '../contexts/reducers/store'
-import { useStore } from '../contexts/store'
 
 const assertDeepLinkSupported = async (deepLink: string) => {
   try {
@@ -18,16 +15,13 @@ const assertDeepLinkSupported = async (deepLink: string) => {
 }
 
 export const useDeepLinks = () => {
-  const [, dispatch] = useStore()
+  const [deepLink, setDeepLink] = useState<string>('')
 
   useEffect(() => {
     const getUrlAsync = async () => {
       const initialUrl = await Linking.getInitialURL()
       if (initialUrl) {
-        dispatch({
-          type: DispatchAction.ACTIVE_DEEP_LINK,
-          payload: [await assertDeepLinkSupported(initialUrl)],
-        })
+        setDeepLink(await assertDeepLinkSupported(initialUrl))
       }
     }
     getUrlAsync()
@@ -36,10 +30,7 @@ export const useDeepLinks = () => {
   useEffect(() => {
     Linking.addEventListener('url', async ({ url }) => {
       if (url) {
-        dispatch({
-          type: DispatchAction.ACTIVE_DEEP_LINK,
-          payload: [await assertDeepLinkSupported(url)],
-        })
+        setDeepLink(await assertDeepLinkSupported(url))
       }
     })
 
@@ -47,4 +38,6 @@ export const useDeepLinks = () => {
       Linking.removeAllListeners('url')
     }
   })
+
+  return deepLink
 }

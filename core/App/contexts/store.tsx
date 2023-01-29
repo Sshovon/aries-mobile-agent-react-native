@@ -28,13 +28,12 @@ export const defaultState: State = {
   lockout: {
     displayNotification: false,
   },
+  privacy: {
+    didShowCameraDisclosure: false,
+  },
   preferences: {
     developerModeEnabled: false,
-    biometryPreferencesUpdated: false,
     useBiometry: false,
-  },
-  deepLink: {
-    activeDeepLink: '',
   },
   error: null,
   loading: false,

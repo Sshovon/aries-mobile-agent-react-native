@@ -15,6 +15,7 @@ import { useNetwork } from '../contexts/network'
 import { DispatchAction } from '../contexts/reducers/store'
 import { useStore } from '../contexts/store'
 import { useTheme } from '../contexts/theme'
+import { getCurrentLanguage } from '../localization'
 import { DeclineType } from '../types/decline'
 import { BifoldError } from '../types/error'
 import { NotificationStackParams, Screens } from '../types/navigators'
@@ -34,13 +35,13 @@ const CredentialOffer: React.FC<CredentialOfferProps> = ({ navigation, route }) 
   const { credentialId } = route.params
 
   const { agent } = useAgent()
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const [, dispatch] = useStore()
   const [buttonsVisible, setButtonsVisible] = useState(true)
   const [acceptModalVisible, setAcceptModalVisible] = useState(false)
   const credential = useCredentialById(credentialId)
   const credentialConnectionLabel = getCredentialConnectionLabel(credential)
-  const [fields, setFields] = useState<Field[]>([])
+  const [fields, setFields] = useState<Array<Field>>([])
   // This syntax is required for the jest mocks to work
   // eslint-disable-next-line import/no-named-as-default-member
   const [loading, setLoading] = React.useState<boolean>(true)
@@ -111,8 +112,8 @@ const CredentialOffer: React.FC<CredentialOfferProps> = ({ navigation, route }) 
       if (offerAttributes) {
         credential.credentialAttributes = [...offerAttributes.map((item) => new CredentialPreviewAttribute(item))]
       }
-      OCABundle.getCredentialPresentationFields(credential as CredentialExchangeRecord, i18n.language).then((fields) =>
-        setFields(fields)
+      OCABundle.getCredentialPresentationFields(credential as CredentialExchangeRecord, getCurrentLanguage()).then(
+        (fields) => setFields(fields)
       )
       setLoading(false)
     })

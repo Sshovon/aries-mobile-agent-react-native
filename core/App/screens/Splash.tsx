@@ -29,6 +29,7 @@ import { useTheme } from '../contexts/theme'
 import { Screens, Stacks } from '../types/navigators'
 import {
   Onboarding as StoreOnboardingState,
+  Privacy as PrivacyState,
   Preferences as PreferencesState,
   LoginAttempt as LoginAttemptState,
 } from '../types/state'
@@ -112,6 +113,16 @@ const Splash: React.FC = () => {
           })
         }
 
+        const privacyData = await AsyncStorage.getItem(LocalStorageKeys.Privacy)
+        if (privacyData) {
+          const dataAsJSON = JSON.parse(privacyData) as PrivacyState
+
+          dispatch({
+            type: DispatchAction.PRIVACY_UPDATED,
+            payload: [dataAsJSON],
+          })
+        }
+
         const data = await AsyncStorage.getItem(LocalStorageKeys.Onboarding)
         if (data) {
           const onboardingState = JSON.parse(data) as StoreOnboardingState
@@ -153,8 +164,8 @@ const Splash: React.FC = () => {
           return
         }
 
-        const options = {
-          config: {
+        const newAgent = new Agent(
+          {
             label: 'Aries Bifold',
             mediatorConnectionsInvite: Config.MEDIATOR_URL,
             mediatorPickupStrategy: MediatorPickupStrategy.Implicit,
@@ -166,10 +177,8 @@ const Splash: React.FC = () => {
             connectToIndyLedgersOnStartup: true,
             autoUpdateStorageOnStartup: true,
           },
-          dependencies: agentDependencies,
-        }
-
-        const newAgent = new Agent(options)
+          agentDependencies
+        )
         const wsTransport = new WsOutboundTransport()
         const httpTransport = new HttpOutboundTransport()
 

@@ -4,7 +4,6 @@ import { StyleSheet, Text, View, Modal, Switch, StatusBar, Platform, ScrollView 
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import Biometrics from '../assets/img/biometrics.svg'
-import ButtonLoading from '../components/animated/ButtonLoading'
 import Button, { ButtonType } from '../components/buttons/Button'
 import { useAuth } from '../contexts/auth'
 import { DispatchAction } from '../contexts/reducers/store'
@@ -90,10 +89,7 @@ const UseBiometry: React.FC = () => {
     // to first authenticate before this action is accepted
     if (screenUsage === UseBiometryUsage.ToggleOnOff) {
       setCanSeeCheckPIN(true)
-      dispatch({
-        type: DispatchAction.BIOMETRY_PREFERENCES_UPDATED,
-        payload: [true],
-      })
+
       return
     }
 
@@ -104,10 +100,6 @@ const UseBiometry: React.FC = () => {
     // If successfully authenticated the toggle may proceed.
     if (status) {
       setBiometryEnabled((previousState) => !previousState)
-      dispatch({
-        type: DispatchAction.BIOMETRY_PREFERENCES_UPDATED,
-        payload: [false],
-      })
     }
 
     setCanSeeCheckPIN(false)
@@ -170,9 +162,7 @@ const UseBiometry: React.FC = () => {
             onPress={continueTouched}
             buttonType={ButtonType.Primary}
             disabled={!continueEnabled}
-          >
-            {!continueEnabled && <ButtonLoading />}
-          </Button>
+          />
         )}
       </View>
       <Modal visible={canSeeCheckPIN} transparent={true} animationType={'slide'}>

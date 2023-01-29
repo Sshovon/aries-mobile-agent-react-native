@@ -3,10 +3,10 @@ import {
   CredentialState,
   IndyCredentialInfo,
   INDY_PROOF_REQUEST_ATTACHMENT_ID,
-  ProofExchangeRecord,
+  ProofRecord,
   ProofState,
   RequestedAttribute,
-  V1RequestPresentationMessage,
+  RequestPresentationMessage,
 } from '@aries-framework/core'
 import { Attachment, AttachmentData } from '@aries-framework/core/build/decorators/attachment/Attachment'
 import { useAgent, useProofById } from '@aries-framework/react-hooks'
@@ -22,7 +22,6 @@ import { testIdWithKey } from '../../App/utils/testable'
 import networkContext from '../contexts/network'
 import timeTravel from '../helpers/timetravel'
 
-jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter')
 jest.mock('@react-native-community/netinfo', () => mockRNCNetInfo)
 jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper')
 jest.mock('@react-navigation/core', () => {
@@ -81,7 +80,7 @@ describe('displays a proof request screen', () => {
       }),
     ]
 
-    const requestPresentationMessage = new V1RequestPresentationMessage({
+    const requestPresentationMessage = new RequestPresentationMessage({
       comment: 'some comment',
       requestPresentationAttachments: [
         new Attachment({
@@ -107,11 +106,11 @@ describe('displays a proof request screen', () => {
       ],
     })
 
-    const testProofRequest = new ProofExchangeRecord({
+    const testProofRequest = new ProofRecord({
       connectionId: '123',
       threadId: requestPresentationMessage.id,
+      requestMessage: requestPresentationMessage,
       state: ProofState.RequestReceived,
-      protocolVersion: 'V1',
     })
 
     const attributeBase = {
@@ -175,7 +174,7 @@ describe('displays a proof request screen', () => {
       expect(declineButton).not.toBeDisabled()
     })
 
-    test.skip('displays a proof request with all claims available', async () => {
+    test('displays a proof request with all claims available', async () => {
       const { agent } = useAgent()
 
       // @ts-ignore

@@ -8,7 +8,6 @@ const translation = {
     "Confirm": "Confirm",
     "Accept": "Accept",
     "Reject": "Reject",
-    "NotNow": "Not now",
     "Share": "Share",
     "Decline": "Decline",
     "Back": "Back",
@@ -31,9 +30,8 @@ const translation = {
     "ShowDetails": "Show Details",
     "TryAgain": "Try Again",
     "Biometrics": "Biometrics",
-    "On": "On",
+    "On" : "On",
     "Off": "Off",
-    "Close": "Close",
   },
   "Language": {
     "English": "English",
@@ -70,8 +68,6 @@ const translation = {
     "Message1035": "Credential offer could not be found.",
     "Title1036": "Unable to fetch wallet credentials",
     "Message1036": "Wallet credentials could not be found",
-    "Title1037": "Unable to remove contact.",
-    "Message1037": "There was a problem while removing the contact.",
   },
   "StatusMessages": {
     "InitAgent": "Initializing agent .."
@@ -82,12 +78,9 @@ const translation = {
     "IAgree": "I Agree",
     "Attestation": "I have read, understand and accept the terms and conditions.",
   },
-  "CameraDisclosure": {
-    "AllowCameraUse": "Allow camera use",
-    "CameraDisclosure": "The camera is used to scan QR codes that initiate a credential offer or credential request. No information about the images is stored, used for analytics, or shared.",
-    "ToContinueUsing": "To continue using the Aries Bifold scan feature, please allow camera permissions.",
-    "Allow": "Allow",
-    "OpenSettings": "Open settings",
+  "PrivacyPolicy": {
+    "Title": "Privacy Policy",
+    "CameraDisclosure": "The camera is used to scan QR Codes for immediate on-device processing. No information about the images is stored, used for analytics, or shared.",
   },
   "PINCreate": {
     "Message": {
@@ -134,8 +127,8 @@ const translation = {
   },
   "PINEnter": {
     "EnterPIN": "Enter your wallet PIN",
-    "Unlock": "Unlock",
-    "Or": "Or",
+    "Unlock":"Unlock",
+    "Or":"Or",
     "BiometricsUnlock": "Unlock with biometrics",
     "IncorrectPIN": "Incorrect PIN",
     "RepeatPIN": "Please try your PIN again.",
@@ -174,23 +167,6 @@ const translation = {
     "Created": "Created",
     "ConnectionState": "Connection State",
     "AContact": "A contact",
-    "DateOfConnection": "Date of connection: {{ date }}",
-    "RemoveTitle": "Remove this contact",
-    "RemoveCaption": "To add credentials, the issuing organization needs to be a contact.",
-    "UnableToRemoveTitle": "Unable to remove contact",
-    "UnableToRemoveCaption": "Unable to remove because there are credentials issued by this contact in your wallet. Remove the credentials first then remove this contact.",
-    "GoToCredentials": "Go to Credentials",
-    "ContactRemoved": "Contact removed"
-  },
-  "WhatAreContacts": {
-    "Title": "What are Contacts?",
-    "Preamble": "Adding organizations as a Contact will allow you to:",
-    "ListItemCredentialUpdates": "Get updates to credentials issued by this organization",
-    "ListItemNewCredentials": "Get offered new credentials",
-    "ListItemProofRequest": "Fast-track proof requests",
-    "RemoveContacts": "You can always remove Contacts at any time from your",
-    "ContactsLink": "Contacts list",
-    "ContactSharing": "Use of your credentials is never shared with your Contacts."
   },
   "Credentials": {
     "CredentialsNotFound": "Credentials not found",
@@ -377,9 +353,7 @@ const translation = {
   },
   "NetInfo": {
     "NoInternetConnectionTitle": "No internet connection",
-    "NoInternetConnectionMessage": "You're unable to access services using Bifold or receive credentials until you're back online.\n\nPlease check your internet connection.",
-    "LedgerConnectivityIssueTitle": "Wallet Services",
-    "LedgerConnectivityIssueMessage": "A firewall may be preventing you from connecting to wallet related services.",
+    "NoInternetConnectionMessage": "You're unable to access services using Bifold or receive credentials until you're back online.\n\nPlease check your internet connection."
   }
 }
 

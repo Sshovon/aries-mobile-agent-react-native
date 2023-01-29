@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { LocalStorageKeys } from '../../constants'
 import {
+  Privacy as PrivacyState,
   Preferences as PreferencesState,
   Onboarding as OnboardingState,
   Authentication as AuthenticationState,
@@ -29,11 +30,14 @@ enum LockoutDispatchAction {
 enum LoginAttemptDispatchAction {
   ATTEMPT_UPDATED = 'loginAttempt/loginAttemptUpdated',
 }
+enum PrivacyDispatchAction {
+  DID_SHOW_CAMERA_DISCLOSURE = 'privacy/didShowCameraDisclosure',
+  PRIVACY_UPDATED = 'privacy/privacyStateLoaded',
+}
 
 enum PreferencesDispatchAction {
   ENABLE_DEVELOPER_MODE = 'preferences/enableDeveloperMode',
   USE_BIOMETRY = 'preferences/useBiometry',
-  BIOMETRY_PREFERENCES_UPDATED = 'preferences/biometryPreferencesUpdated',
   PREFERENCES_UPDATED = 'preferences/preferencesStateLoaded',
 }
 
@@ -41,27 +45,23 @@ enum AuthenticationDispatchAction {
   DID_AUTHENTICATE = 'authentication/didAuthenticate',
 }
 
-enum DeepLinkDispatchAction {
-  ACTIVE_DEEP_LINK = 'deepLink/activeDeepLink',
-}
-
 export type DispatchAction =
   | OnboardingDispatchAction
   | ErrorDispatchAction
+  | PrivacyDispatchAction
   | LoginAttemptDispatchAction
   | LockoutDispatchAction
   | PreferencesDispatchAction
   | AuthenticationDispatchAction
-  | DeepLinkDispatchAction
 
 export const DispatchAction = {
   ...OnboardingDispatchAction,
   ...ErrorDispatchAction,
+  ...PrivacyDispatchAction,
   ...LoginAttemptDispatchAction,
   ...LockoutDispatchAction,
   ...PreferencesDispatchAction,
   ...AuthenticationDispatchAction,
-  ...DeepLinkDispatchAction,
 }
 
 export interface ReducerAction<R> {
@@ -103,19 +103,28 @@ export const reducer = <S extends State>(state: S, action: ReducerAction<Dispatc
 
       return newState
     }
-    case PreferencesDispatchAction.BIOMETRY_PREFERENCES_UPDATED: {
-      const updatePending = (action?.payload ?? []).pop() ?? false
-      const preferences = { ...state.preferences, biometryPreferencesUpdated: updatePending }
-      return {
-        ...state,
-        preferences,
-      }
-    }
     case PreferencesDispatchAction.PREFERENCES_UPDATED: {
       const preferences: PreferencesState = (action?.payload || []).pop()
       return {
         ...state,
         preferences,
+      }
+    }
+    case PrivacyDispatchAction.DID_SHOW_CAMERA_DISCLOSURE: {
+      const newState = {
+        ...state,
+        ...{ privacy: { didShowCameraDisclosure: true } },
+      }
+
+      AsyncStorage.setItem(LocalStorageKeys.Privacy, JSON.stringify(newState.privacy))
+
+      return newState
+    }
+    case PrivacyDispatchAction.PRIVACY_UPDATED: {
+      const privacy: PrivacyState = (action?.payload || []).pop()
+      return {
+        ...state,
+        privacy,
       }
     }
     case LoginAttemptDispatchAction.ATTEMPT_UPDATED: {
@@ -197,13 +206,6 @@ export const reducer = <S extends State>(state: S, action: ReducerAction<Dispatc
       return {
         ...state,
         error: null,
-      }
-    }
-    case DeepLinkDispatchAction.ACTIVE_DEEP_LINK: {
-      const value = (action?.payload || []).pop()
-      return {
-        ...state,
-        ...{ deepLink: { activeDeepLink: value } },
       }
     }
     default:

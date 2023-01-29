@@ -9,7 +9,6 @@ export interface Onboarding {
 
 export interface Preferences {
   useBiometry: boolean
-  biometryPreferencesUpdated: boolean
   developerModeEnabled: boolean
 }
 
@@ -23,21 +22,21 @@ export interface LoginAttempt {
   loginAttempts: number
 }
 
-export interface Authentication {
-  didAuthenticate: boolean
+export interface Privacy {
+  didShowCameraDisclosure: boolean
 }
 
-export interface DeepLink {
-  activeDeepLink?: string
+export interface Authentication {
+  didAuthenticate: boolean
 }
 
 export interface State {
   onboarding: Onboarding
   authentication: Authentication
+  privacy: Privacy
   lockout: Lockout
   loginAttempt: LoginAttempt
   preferences: Preferences
   error: BifoldError | null
-  deepLink: DeepLink
   loading: boolean
 }

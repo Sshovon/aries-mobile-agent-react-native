@@ -1,12 +1,8 @@
 import type { StackScreenProps } from '@react-navigation/stack'
 
-import {
-  ProofExchangeRecord,
-  RequestedAttribute,
-  RequestedPredicate,
-  RetrievedCredentials,
-} from '@aries-framework/core'
+import { ProofRecord, RequestedAttribute, RequestedPredicate, RetrievedCredentials } from '@aries-framework/core'
 import { useAgent, useConnectionById, useProofById } from '@aries-framework/react-hooks'
+import flatten from 'lodash.flatten'
 import React, { useState, useMemo, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
@@ -26,7 +22,7 @@ import { DeclineType } from '../types/decline'
 import { BifoldError } from '../types/error'
 import { NotificationStackParams, Screens } from '../types/navigators'
 import { Attribute, Predicate } from '../types/record'
-import { processProofAttributes, processProofPredicates } from '../utils/helpers'
+import { processProofAttributes, processProofPredicates, sortCredentialsForAutoSelect } from '../utils/helpers'
 import { testIdWithKey } from '../utils/testable'
 
 import ProofRequestAccept from './ProofRequestAccept'
@@ -53,9 +49,10 @@ const ProofRequest: React.FC<ProofRequestProps> = ({ navigation, route }) => {
     : proof?.connectionId ?? ''
   // This syntax is required for the jest mocks to work
   // eslint-disable-next-line import/no-named-as-default-member
-  const [loading, setLoading] = useState<boolean>(true)
+  const [loading, setLoading] = React.useState<boolean>(true)
   const { assertConnectedNetwork } = useNetwork()
   const { ColorPallet, ListItems, TextTheme } = useTheme()
+
   const styles = StyleSheet.create({
     headerTextContainer: {
       paddingHorizontal: 25,
@@ -125,32 +122,16 @@ const ProofRequest: React.FC<ProofRequestProps> = ({ navigation, route }) => {
       return
     }
     setLoading(true)
-    const retrieveCredentialsForProof = async (
-      proof: ProofExchangeRecord
-      // @ts-ignore
-    ): Promise<{ format: any; credentials: any }> => {
+    const retrieveCredentialsForProof = async (proof: ProofRecord) => {
       try {
-        const format = await agent.proofs.getFormatData(proof.id)
-        const credentials = await agent.proofs.getRequestedCredentialsForProofRequest({
-          proofRecordId: proof.id,
-          config: {
-            // Setting `filterByNonRevocationRequirements` to `false` returns all
-            // credentials even if they are revokable (and revoked). We need this to
-            // be able to show why a proof cannot be satisfied. Otherwise we can only
-            // show failure.
-            filterByNonRevocationRequirements: false,
-          },
+        const credentials = await agent.proofs.getRequestedCredentialsForProofRequest(proof.id, {
+          filterByNonRevocationRequirements: false,
         })
-
         if (!credentials) {
           throw new Error(t('ProofRequest.RequestedCredentialsCouldNotBeFound'))
         }
 
-        if (!format) {
-          throw new Error(t('ProofRequest.RequestedCredentialsCouldNotBeFound'))
-        }
-
-        return { format, credentials }
+        return credentials
       } catch (error: unknown) {
         dispatch({
           type: DispatchAction.ERROR_ADDED,
@@ -160,15 +141,22 @@ const ProofRequest: React.FC<ProofRequestProps> = ({ navigation, route }) => {
     }
 
     retrieveCredentialsForProof(proof)
-      .then(({ format, credentials }) => {
-        if (!credentials || !format) {
+      .then((retrievedCredentials) => {
+        if (!retrievedCredentials) {
           return
         }
 
-        const attributes = processProofAttributes(format, credentials.proofFormats.indy)
-        const predicates = processProofPredicates(format, credentials.proofFormats.indy)
+        const fields: Fields = {
+          ...retrievedCredentials?.requestedAttributes,
+          ...retrievedCredentials?.requestedPredicates,
+        }
 
-        setRetrievedCredentials(credentials as unknown as RetrievedCredentials)
+        flatten(Object.values(fields))
+
+        const attributes = processProofAttributes(proof, retrievedCredentials)
+        const predicates = processProofPredicates(proof, retrievedCredentials)
+
+        setRetrievedCredentials(retrievedCredentials)
         setAttributes(attributes)
         setPredicates(predicates)
         setLoading(false)
@@ -203,23 +191,15 @@ const ProofRequest: React.FC<ProofRequestProps> = ({ navigation, route }) => {
         throw new Error(t('ProofRequest.RequestedCredentialsCouldNotBeFound'))
       }
 
+      const sortedCreds = sortCredentialsForAutoSelect(retrievedCredentials)
       const automaticRequestedCreds =
-        retrievedCredentials &&
-        (await agent.proofs.autoSelectCredentialsForProofRequest({
-          proofRecordId: proof.id,
-          config: {
-            filterByPresentationPreview: true,
-          },
-        }))
+        retrievedCredentials && agent.proofs.autoSelectCredentialsForProofRequest(sortedCreds)
 
       if (!automaticRequestedCreds) {
         throw new Error(t('ProofRequest.RequestedCredentialsCouldNotBeFound'))
       }
 
-      await agent.proofs.acceptRequest({
-        proofRecordId: proof.id,
-        proofFormats: automaticRequestedCreds.proofFormats,
-      })
+      await agent.proofs.acceptRequest(proof.id, automaticRequestedCreds)
     } catch (err: unknown) {
       setPendingModalVisible(false)
 

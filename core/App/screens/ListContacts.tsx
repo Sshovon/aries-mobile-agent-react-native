@@ -1,4 +1,3 @@
-import { ConnectionType } from '@aries-framework/core'
 import { useConnections } from '@aries-framework/react-hooks'
 import React from 'react'
 import { FlatList } from 'react-native'
@@ -12,9 +11,7 @@ interface ListContactsProps {
 }
 
 const ListContacts: React.FC<ListContactsProps> = ({ navigation }) => {
-  const { records } = useConnections()
-  // Filter out mediator agents
-  const connections = records.filter((r) => !r.connectionTypes.includes(ConnectionType.Mediator))
+  const { records: connections } = useConnections()
   const { ColorPallet } = useTheme()
   return (
     <FlatList

@@ -28,7 +28,7 @@ const ConnectionAlert: React.FC<ConnectionAlertProps> = ({ connectionID }) => {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: ColorPallet.notification.popupOverlay,
+      backgroundColor: 'rgba(0,0,0,0.5)',
       padding: 20,
     },
     notifyTextContainer: {

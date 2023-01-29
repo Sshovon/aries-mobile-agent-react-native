@@ -108,7 +108,7 @@ const Settings: React.FC<SettingsProps> = ({ navigation }) => {
           title: t('Settings.WhatAreContacts'),
           accessibilityLabel: t('Settings.WhatAreContacts'),
           testID: testIdWithKey('WhatAreContacts'),
-          onPress: () => navigation.getParent()?.navigate(Stacks.ContactStack, { screen: Screens.WhatAreContacts }),
+          onPress: () => null,
           value: undefined,
         },
       ],
@@ -146,7 +146,7 @@ const Settings: React.FC<SettingsProps> = ({ navigation }) => {
         {
           title: t('Settings.Developer'),
           accessibilityLabel: t('Settings.Developer'),
-          testID: testIdWithKey('DeveloperOptions'),
+          testID: testIdWithKey('Developer'),
           onPress: () => navigation.navigate(Screens.Developer),
         },
       ]
@@ -185,11 +185,11 @@ const Settings: React.FC<SettingsProps> = ({ navigation }) => {
     <SafeAreaView edges={['bottom', 'left', 'right']}>
       <View style={styles.container}>
         <SectionList
-          renderItem={({ item: { title, value, accessibilityLabel, testID, onPress } }) => (
+          renderItem={({ item: { title, value, onPress } }) => (
             <SectionRow
               title={title}
-              accessibilityLabel={accessibilityLabel}
-              testID={testID ?? 'NoTestIdFound'}
+              accessibilityLabel={title}
+              testID={testIdWithKey(title)}
               value={value}
               onPress={onPress}
             />

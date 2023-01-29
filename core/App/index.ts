@@ -10,7 +10,6 @@ import * as components from './components'
 import LoadingIndicator from './components/animated/LoadingIndicator'
 import Button, { ButtonType } from './components/buttons/Button'
 import CheckBoxRow from './components/inputs/CheckBoxRow'
-import InfoBox, { InfoBoxType } from './components/misc/InfoBox'
 import ErrorModal from './components/modals/ErrorModal'
 import NetInfo from './components/network/NetInfo'
 import Record from './components/record/Record'
@@ -57,6 +56,7 @@ export type { WalletSecret } from './types/security'
 export type { ReducerAction } from './contexts/reducers/store'
 export type {
   State,
+  Privacy as PrivacyState,
   Onboarding as OnboardingState,
   LoginAttempt as LoginAttemptState,
   Preferences as PreferencesState,
@@ -74,8 +74,6 @@ export {
   CheckBoxRow,
   ErrorModal,
   InfoTextBox,
-  InfoBox,
-  InfoBoxType,
   ToastType,
   toastConfig,
   RootStack,

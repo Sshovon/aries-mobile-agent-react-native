@@ -8,7 +8,6 @@ const translation = {
     "Confirm": "Confirmar",
     "Accept": "Aceitar",
     "Reject": "Rejeitar",
-    "NotNow": "Agora não",
     "Share": "Compartilhar",
     "Decline": "Recusar",
     "Back": "Voltar",
@@ -30,10 +29,8 @@ const translation = {
     "Dismiss": "Dispensar",
     "ShowDetails": "Mostrar Detalhes",
     "Biometrics": "Biometria",
-    "On": "Ligado",
+    "On" : "Ligado",
     "Off": "Desligado",
-    "Close": "Close (PB)",
-
   },
   "Language": {
     "English": "Inglês",
@@ -68,10 +65,6 @@ const translation = {
     "Message1034": "Requisição de prova não foi encontrada.",
     "Title1035": "Não foi possível buscar oferta de credencial.",
     "Message1035": "Oferta de credencial não foi encontrada.",
-    "Title1036": "Não foi possível obter credenciais da carteira",
-    "Message1036": "Não foram encontradas credenciais na carteira",
-    "Title1037": "Não foi possível remover contato",
-    "Message1037": "Ocorreu um problema ao remover o contato",
   },
   "StatusMessages": {
     "InitAgent": "Iniciando agente .."
@@ -82,33 +75,30 @@ const translation = {
     "IAgree": "Eu Concordo",
     "Attestation": "Eu li, entendo e aceito os termos e condições.",
   },
-  "CameraDisclosure": {
-    "AllowCameraUse": "Permitir uso da câmera",
+  "PrivacyPolicy": {
+    "Title": "Política de Privacidade",
     "CameraDisclosure": "A câmera é usada para escanear QR Codes para processamento imediato no dispositivo. Nenhuma informação sobre as imagens é armazenada, usada para análise, ou compartilhada.",
-    "ToContinueUsing": "Para continuar usando a funcionalidade de scan da Aries Bifold, favor permitir o uso da câmera.",
-    "Allow": "Permitir",
-    "OpenSettings": "Abrir as configurações",
   },
   "PINCreate": {
     "Message": {
-      "CrossPatternValidation": "Um padrão de X foi detectado no seu PIN. Favor tentar novamente.",
-      "OddOrEvenSequenceValidation": "Uma sequencia de números pares ou ímpares foi detectada em seu PIN. Favor tentar novamente.",
-      "NoRepetitionOfTheSameNumbersValidation": "O PIN não pode ter a repetição de um mesmo número. Favor tentar novamente.",
-      "NoRepetitionOfTheTwoSameNumbersValidation": "Uma sequência repetida de dois números foi detectada em seu PIN. Favor tentar novamente.",
-      "NoSeriesOfNumbersValidation": "Uma sequência foi detectada em seu PIN. Favor tentar novamente.",
-      "PINOnlyContainDigitsValidation": "Seu PIN deve conter apenas números. Favor tentar novamente.",
-      "PINTooShortValidation": "Seu PIN é muito curto. Favor tentar novamente.",
-      "PINTooLongValidation": "Seu PIN é muito longo. Favor tentar novamente.",
+      "CrossPatternValidation": "A pattern of cross was detected in your PIN. Please try again. (PT-BR)",
+      "OddOrEvenSequenceValidation": "An odd or even sequence was detected in your PIN. Please try again. (PT-BR)",
+      "NoRepetitionOfTheSameNumbersValidation": "The PIN can't have a repetition of the same digit. Please try again. (PT-BR)",
+      "NoRepetitionOfTheTwoSameNumbersValidation": "A repeated two-digit sequence was detected in your PIN. Please try again. (PT-BR)",
+      "NoSeriesOfNumbersValidation": "A series was detected in your PIN. Please try again. (PT-BR)",
+      "PINOnlyContainDigitsValidation": "Your PIN needs to only contain digits. Please try again. (PT-BR)",
+      "PINTooShortValidation": "Your PIN is too short. Please try again. (PT-BR)",
+      "PINTooLongValidation": "Your PIN is too long. Please try again. (PT-BR)",
     },
     "Helper": {
-      "CrossPatternValidation": "Não contém um padrão de X.",
-      "OddOrEvenSequenceValidation": "Não contém uma sequência de números pares ou ímpares.",
-      "NoRepetitionOfTheSameNumbersValidation": "Não contém o mesmo número repetido.",
-      "NoRepetitionOfTheTwoSameNumbersValidation": "Não contém uma sequência repetida de dois números.",
-      "NoSeriesOfNumbersValidation": "Não contém uma sequência de números (123).",
-      "PINOnlyContainDigitsValidation": "Deve conter apenas números.",
-      "PINTooShortValidation": "O PIN é curto demais.",
-      "PINTooLongValidation": "O PIN é longo demais.",
+      "CrossPatternValidation": "Does not contain a pattern of cross. (PT-BR)",
+      "OddOrEvenSequenceValidation": "Does not contain an odd or even sequence. (PT-BR)",
+      "NoRepetitionOfTheSameNumbersValidation": "Does not contain the same repeating number. (PT-BR)",
+      "NoRepetitionOfTheTwoSameNumbersValidation": "Does not contain repeating two-digit sequence. (PT-BR)",
+      "NoSeriesOfNumbersValidation": "Does not contain a series of numbers (123). (PT-BR)",
+      "PINOnlyContainDigitsValidation": "Must contain only digits. (PT-BR)",
+      "PINTooShortValidation": "The PIN is long enought. (PT-BR)",
+      "PINTooLongValidation": "The PIN is long enought. (PT-BR)",
     },
     "UserAuthenticationPIN": "PIN de autenticação do usuário",
     "PINTooShort": "PIN é curto demais",
@@ -134,8 +124,8 @@ const translation = {
   },
   "PINEnter": {
     "EnterPIN": "Digitar PIN",
-    "Unlock": "Destravar",
-    "Or": "Ou",
+    "Unlock":"Destravar",
+    "Or":"Ou",
     "BiometricsUnlock": "Destravar com Biometria",
     "IncorrectPIN": "PIN incorreto",
     "EnableBiometrics": "Você deve habilitar a biometria para poder carregar a carteira.",
@@ -162,23 +152,6 @@ const translation = {
     "Created": "Criado",
     "ConnectionState": "Estado da conexão",
     "AContact": "Um contato",
-    "DateOfConnection": "Data da conexão: {{ date }}",
-    "RemoveTitle": "Remover este contato",
-    "RemoveCaption": "Para adicionar credenciais, a organização emissora deve ser um contato.",
-    "UnableToRemoveTitle": "Não foi possível remover o contato.",
-    "UnableToRemoveCaption": "Não foi possivel remover pois há credenciais emitidas por este contato em sua carteira. Remove essas credenciais antes e então remova este contato.",
-    "GoToCredentials": "Ir para Credenciais.",
-    "ContactRemoved": "Contato removido"
-  },
-  "WhatAreContacts": {
-    "Title": "O que são Contatos?",
-    "Preamble": "Adicionar organizações como um Contato irá possibilitar que você:",
-    "ListItemCredentialUpdates": "Receba atualizações de credenciais emitidas por esta organização.",
-    "ListItemNewCredentials": "Receba ofertas de novas credenciais.",
-    "ListItemProofRequest": "Acompanhe requisições de prova.",
-    "RemoveContacts": "Você sempre pode remover Contatos a qualquer momento de sua",
-    "ContactsLink": "Lista de Contatos",
-    "ContactSharing": "O uso de suas credenciais nunca é compartilhado com seus Contatos.",
   },
   "Credentials": {
     "CredentialsNotFound": "Credenciais não encontradas",
@@ -199,8 +172,8 @@ const translation = {
     "RemoveTitle": "Remover a credencial da sua carteira",
     "RemoveCaption": "Você perderá a habilidade de prover as informações desta credencial com essa carteira.",
     "CredentialNotFound": "Credencial não encontrada",
-    "YouWillNotLose": "Você NÃO perderá",
-    "YouWillNotLoseListItem1": "Sua credencial dentro do sistema que lhe emitiu sua credencial.",
+    "YouWillNotLose": "Você NÃO perderá",    
+    "YouWillNotLoseListItem1": "Sua credencial dentro do sistema que lhe emitiu sua credencial.", 
     "YouWillNotLoseListItem2": "A organização emissora como um Contato.",
     "HowToGetThisCredentialBack": "Como ter essa credencial de volta",
     "HowToGetThisCredentialBackListItem1": "Você terá que ir à organização que lhe emitiu essa credencial e requisita-la novamente.",
@@ -246,7 +219,7 @@ const translation = {
     "SettingsInstruction": "Você sempre pode remover contatos a qualquer momento em ",
     "PrivacyMessage": "O uso de suas credenciais nunca é compartilhado com seus contatos.",
     "PopupExit": "Entendi"
-  },
+},
   "CredentialOffer": {
     "CredentialOffer": "Oferta de Credencial",
     "ThisIsTakingLongerThanExpected": "Isso está demorando mais que o normal. Verifique novamente mais tarde sua nova credencial.",
@@ -348,7 +321,7 @@ const translation = {
     "ContactDetails": "Detalhes do Contato",
     "Biometry": "Biometria",
     "Developer": "Developer options",
-    "ChangePIN": "Alterar PIN",
+    "ChangePIN": "Alterar PIN"
   },
   "Loading": {
     "TakingTooLong": "Isso esta demorando mais que o normal. Você pode voltar para a home ou continuar esperando.",
@@ -356,9 +329,7 @@ const translation = {
   },
   "NetInfo": {
     "NoInternetConnectionTitle": "Sem conexão com a internet",
-    "NoInternetConnectionMessage": "Não é possivel acessar serviços utilizando a Bifold ou receber credenciais até você voltar a estar online.\n\nFavor checkar sua conexão com a internet.",
-    "LedgerConnectivityIssueTitle": "Serviços de Carteira",
-    "LedgerConnectivityIssueMessage": "Um firewall pode estar te impedindo de conectar-se a serviços relacionados a carteira.",
+    "NoInternetConnectionMessage": "Não é possivel acessar serviços utilizando a Bifold ou receber credenciais até você voltar a estar online.\n\nFavor checkar sua conexão com a internet."
   }
 }
 
